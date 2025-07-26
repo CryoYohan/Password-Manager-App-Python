@@ -25,7 +25,7 @@ def generate_password():
     password_field.insert(0, generated_password)
     pyperclip.copy(generated_password) # Copy generated password to clipboard
 
-# ---------------------------- SAVE PASSWORD ------------------------------- #
+# ---------------------------- SAVE AND SEARCH PASSWORD ------------------------------- #
 def save():
     website_name = website_field.get()
     email_or_username = email_username_field.get()
@@ -69,6 +69,21 @@ def save():
         website_field.delete(0, END)
         password_field.delete(0, END)
 
+def search():
+    website = website_field.get()
+    try:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showerror("Error",message="Data File Not Found")
+    except json.decoder.JSONDecodeError:
+        messagebox.showerror("Error", message="JSON File is empty. Add Data first")
+    else:
+        try:
+            messagebox.showinfo("Info",message=f"Email: {data[website]["email"]}\nPassword: {data[website]["password"]}")
+        except KeyError:
+            messagebox.showwarning("Warning",message=f"No Record of this: {website}")
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.config(padx=50, pady=50)
@@ -84,7 +99,7 @@ mypass_logo = canvas.create_image(100,94, image=mypass_image)
 website_label = Label(window, text="Website: ")
 website_field = Entry(window, width=35)
 website_field.focus()
-search_btn = Button(window, text="Search", width=17)
+search_btn = Button(window, text="Search", width=17, cursor="hand2", command=search)
 email_username_label = Label(window, text="Username/Email: ")
 email_username_field = Entry(window, width=35)
 email_username_field.insert(0,"sample@email.com")
@@ -96,7 +111,8 @@ add_btn = Button(window, text="Add", width=36, cursor="hand2", command=save)
 # Grid Layout
 canvas.grid(row=0, column=1,sticky=NSEW)
 website_label.grid(row=1, column=0,sticky=NSEW)
-website_field.grid(row=1, column=1, columnspan=2,sticky=NSEW,pady=5)
+website_field.grid(row=1, column=1,sticky=NSEW,pady=5, padx=2)
+search_btn.grid(row=1, column=2, sticky=NSEW, pady=5)
 email_username_label.grid(row=2, column=0,sticky=NSEW)
 email_username_field.grid(row=2, column=1, columnspan=2,sticky=NSEW,pady=5)
 password_label.grid(row=3, column=0,sticky=NSEW)
