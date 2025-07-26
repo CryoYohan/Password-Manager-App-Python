@@ -6,3 +6,5 @@ GG,gg@email.com,gg123
 Epic Games,sample@email.com,R45qe]K}UU:a05f`
 HonorxKings,sample@email.com,G}ccQJGh-23L2!9Bu"
 Esports Arena,cryo@email.com,JW7Jdf2i9Ow\d{5
+Netflix,yashoi@email.com,B98&3yUItX0jSi#_q
+Dota 2,sally@email.com,2R^9fX]u=83Mg.FJ
