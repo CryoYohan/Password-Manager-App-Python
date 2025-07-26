@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice, shuffle
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -29,22 +30,24 @@ def save():
     website_name = website_field.get()
     email_or_username = email_username_field.get()
     password = password_field.get()
+    new_data = {
+        website_name:{
+            "email": email_or_username,
+            "password": password
+        }
+    }
 
     if website_name.strip() == "" or email_or_username.strip() == "" or password.strip() == "":
         messagebox.showwarning("Warning", "Please fill in empty fields!")
         print("Data not saved!")
 
     else:
-        is_ok = messagebox.askokcancel(title="Confirmation", message="These are the details you entered:\n\nEmail: {}\nPassword: {}\n\nIs it okay to save?".format(email_or_username, password))
-
-        if is_ok:
-            with open("data.txt", "a") as file:
-                data = f"{website_name},{email_or_username},{password}\n"
-                file.write(data)
-            print("Data saved!")
-            messagebox.showinfo("Information", "Data Saved!")
-            website_field.delete(0, END)
-            password_field.delete(0, END)
+        with open("data.json", "w") as file:
+            json.dump(new_data, file, indent=1)
+        print("Data saved!")
+        messagebox.showinfo("Information", "Data Saved!")
+        website_field.delete(0, END)
+        password_field.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -61,6 +64,7 @@ mypass_logo = canvas.create_image(100,94, image=mypass_image)
 website_label = Label(window, text="Website: ")
 website_field = Entry(window, width=35)
 website_field.focus()
+search_btn = Button(window, text="Search", width=17)
 email_username_label = Label(window, text="Username/Email: ")
 email_username_field = Entry(window, width=35)
 email_username_field.insert(0,"sample@email.com")
