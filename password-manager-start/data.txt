@@ -1,0 +1,8 @@
+Gmail,johndoe@gmail.com,johndoe123email
+Facebbook,johndoe@gmail.com,johndoe123facebook
+Steam,steam@email.com,123456
+PSN,psn@email.com,ps4_og
+GG,gg@email.com,gg123
+Epic Games,sample@email.com,R45qe]K}UU:a05f`
+HonorxKings,sample@email.com,G}ccQJGh-23L2!9Bu"
+Esports Arena,cryo@email.com,JW7Jdf2i9Ow\d{5

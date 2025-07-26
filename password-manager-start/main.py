@@ -1,26 +1,73 @@
-import tkinter
 from tkinter import *
-
+from tkinter import messagebox
+from random import randint, choice, shuffle
+import pyperclip
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z',
+               'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+               'V', 'W', 'X', 'Y', 'Z']
+
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+
+    symbols = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|',
+               '\\', ';', ':', "'", '"', ',', '<', '.', '>', '/', '?']
+
+    password_list = [choice(letters) for _ in range(randint(8, 10))]
+    password_list.extend([str(choice(numbers)) for _ in range(randint(2, 4))])
+    password_list.extend([choice(symbols) for _ in range(randint(2, 4))])
+
+    shuffle(password_list)
+    generated_password = "".join(password_list)
+    password_field.delete(0, END)
+    password_field.insert(0, generated_password)
+    pyperclip.copy(generated_password) # Copy generated password to clipboard
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save():
+    website_name = website_field.get()
+    email_or_username = email_username_field.get()
+    password = password_field.get()
+
+    if website_name.strip() == "" or email_or_username.strip() == "" or password.strip() == "":
+        messagebox.showwarning("Warning", "Please fill in empty fields!")
+        print("Data not saved!")
+
+    else:
+        is_ok = messagebox.askokcancel(title="Confirmation", message="These are the details you entered:\n\nEmail: {}\nPassword: {}\n\nIs it okay to save?".format(email_or_username, password))
+
+        if is_ok:
+            with open("data.txt", "a") as file:
+                data = f"{website_name},{email_or_username},{password}\n"
+                file.write(data)
+            print("Data saved!")
+            messagebox.showinfo("Information", "Data Saved!")
+            website_field.delete(0, END)
+            password_field.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.config(padx=50, pady=50)
 window.title("Password Manager")
+window.resizable(False, False)
 
 canvas = Canvas(width=200, height=200, highlightthickness=0)
 mypass_image = PhotoImage(file="logo.png")
+
+window.wm_iconphoto(True, mypass_image) # Custom GUI Icon
+
 mypass_logo = canvas.create_image(100,94, image=mypass_image)
 website_label = Label(window, text="Website: ")
 website_field = Entry(window, width=35)
+website_field.focus()
 email_username_label = Label(window, text="Username/Email: ")
 email_username_field = Entry(window, width=35)
+email_username_field.insert(0,"sample@email.com")
 password_label = Label(window, text="Password: ")
 password_field = Entry(window, width=21)
-generate_password_btn = Button(window, text="Generate Password")
-add_btn = Button(window, text="Add", width=36)
+generate_password_btn = Button(window, text="Generate Password", cursor="hand2", command=generate_password)
+add_btn = Button(window, text="Add", width=36, cursor="hand2", command=save)
 
 # Grid Layout
 canvas.grid(row=0, column=1,sticky=NSEW)
