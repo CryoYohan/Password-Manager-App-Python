@@ -1,6 +1,14 @@
 {
+ "Facebook": {
+  "email": "sample@email.com",
+  "password": "Z<bx#$k17pSKQMs"
+ },
  "Gmail": {
   "email": "sample@email.com",
-  "password": "8R11UUqs*{wZ]7B"
+  "password": "%LBy7!tIM7Hjeb78"
+ },
+ "Youtube": {
+  "email": "sample@email.com",
+  "password": "+A6X0AO|og7Ouuc!"
  }
 }

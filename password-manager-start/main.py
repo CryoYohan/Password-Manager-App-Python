@@ -42,9 +42,29 @@ def save():
         print("Data not saved!")
 
     else:
-        with open("data.json", "w") as file:
-            json.dump(new_data, file, indent=1)
-        print("Data saved!")
+        data = None
+        # Load JSON data
+        try:
+            # Initially, update JSON file if not empty
+            with open("data.json", "r") as file:
+                # Read JSON Data
+                data = json.load(file)
+                # Update JSON Data
+                data.update(new_data)
+        # If data.json file not created
+        except FileNotFoundError:
+            # Create JSON File
+            file = open("data.json", "w")
+            file.close()
+        # If JSON File is empty
+        except json.decoder.JSONDecodeError:
+            print("No data in JSON. Changing from update.() data to save/dump.() data to JSON file")
+            data = new_data
+        # Whatever happens, write data to JSON file
+        finally:
+            with open("data.json", "w") as file:
+                json.dump(data, file, indent=1)
+
         messagebox.showinfo("Information", "Data Saved!")
         website_field.delete(0, END)
         password_field.delete(0, END)
